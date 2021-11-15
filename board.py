@@ -1,3 +1,5 @@
+import random
+
 class Board:
     def __init__(self) -> None:
         self.board = []
@@ -10,8 +12,20 @@ class Board:
             for board_x in range(self.board_width):
                 line.append(Tile(False, 0))
             self.board.append(line)
+        mine_coordinates = self.get_mines_coordinations()
         self.board[3][4] = Tile(True)
-        
+
+    def get_mines_coordinations(self):
+        mines = []
+        for a in range(10):
+            while True:
+                coordination = (random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
+                if coordination in mines:
+                    continue
+                else:
+                    break
+            mines.append(coordination)
+        return mines
     
     def __str__(self) -> str:
         output = ''
@@ -32,3 +46,5 @@ class Tile:
         else:
             return str(self.value)
 
+board = Board()
+board.generate_board()

@@ -9,7 +9,7 @@ BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 
 def main():
-    global FPS_CLOCK, DISPLAY_SURFACE, BASIC_FONT, BUTTONS
+    global FPS_CLOCK, DISPLAY_SURFACE, BUTTONS
 
     pygame.init()
     FPS_CLOCK = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
