@@ -1,16 +1,20 @@
 import pygame
 from pygame.locals import *
-import board
-import time
 
-WINDOW_WIDTH = 420
-WINDOW_HEIGHT = 420
+WINDOW_WIDTH = 600
+WINDOW_HEIGHT = 600
+DISPLAY_WIDTH = WINDOW_WIDTH
+DISPLAY_HEIGHT = WINDOW_HEIGHT - 100 #potom změnit až tam budou ty stats
+CELL_SIZE: 10
+assert DISPLAY_WIDTH % CELL_SIZE == 0, 'Window width must be a multiple of cell size.'
+assert DISPLAY_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
+
+BG_COLOR = (215, 215, 215)
+GRID_COLOR = (181, 181, 181)
+BASIC_FONT = pygame.font.Font('freesansbold.ttf', 20)
 
 def main():
     global FPS_CLOCK, DISPLAY_SURFACE, BASIC_FONT, BUTTONS
 
     pygame.init()
     FPS_CLOCK = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption("Minesweeper")
-    while True:
-        pygame.display.update
