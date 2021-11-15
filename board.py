@@ -8,26 +8,27 @@ class Board:
         for board_y in range(self.board_height):
             line = []
             for board_x in range(self.board_width):
-                line.append('a')
+                line.append(Tile(False, 0))
             self.board.append(line)
+        self.board[3][4] = Tile(True)
+        
     
     def __str__(self) -> str:
         output = ''
         for line in self.board:
             for cell in line:
-                output += cell
+                output += str(cell) + '|'
             output += '\n'
         return output
 
 class Tile:
-    def __init__(self) -> None:
-        self.is_mine = False
-        self.value = 0
+    def __init__(self, is_mine, value = None) -> None:
+        self.is_mine = is_mine
+        self.value = value
     
     def __str__(self) -> str:
         if self.is_mine == True:
-            return 
+            return 'x'
+        else:
+            return str(self.value)
 
-board = Board()
-board.generate_board()
-print(board)
