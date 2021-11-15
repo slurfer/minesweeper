@@ -1,5 +1,6 @@
 import pygame
 from pygame.locals import *
+import board
 
 def main():
     global FPS_CLOCK, DISPLAY_SURFACE, BASIC_FONT, BUTTONS
