@@ -17,3 +17,6 @@ def main():
 
     pygame.init()
     FPS_CLOCK = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+if __name__ == '__main__':
+    main()
