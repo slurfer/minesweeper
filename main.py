@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 from board import *
+from graphic import *
 import time
 
 WINDOW_WIDTH = 420
