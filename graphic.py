@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 WINDOW_WIDTH = 420
-WINDOW_HEIGHT = 600 
+WINDOW_HEIGHT = 600
 PLAY_FIELD_HEIGHT = 420 
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
