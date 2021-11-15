@@ -1,7 +1,12 @@
 import pygame
 from pygame.locals import *
 
-
+WINDOW_WIDTH = 420
+WINDOW_HEIGHT = 420
+BASIC_FONT = None
+BASIC_FONT_SIZE = 50
+CELL_SIZE = 10
+DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
 
