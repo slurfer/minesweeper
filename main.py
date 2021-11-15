@@ -5,7 +5,8 @@ from graphic import *
 import time
 
 WINDOW_WIDTH = 420
-WINDOW_HEIGHT = 420
+WINDOW_HEIGHT = 600 #velikost okna, prosím, nemažte to ^^
+PLAY_FIELD_HEIGHT = 420 #velikost hrací plochy
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 CELL_SIZE = 10
