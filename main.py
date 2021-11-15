@@ -11,7 +11,7 @@ assert DISPLAY_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cel
 
 BG_COLOR = (215, 215, 215)
 GRID_COLOR = (181, 181, 181)
-BASIC_FONT = pygame.font.Font('freesansbold.ttf', 20)
+BASIC_FONT = pygame.font.Font('freesansbold.ttf', 8)
 
 def main():
     global FPS_CLOCK, DISPLAY_SURFACE, BUTTONS
