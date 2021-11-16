@@ -5,12 +5,15 @@ import time
 
 WINDOW_WIDTH = 420
 WINDOW_HEIGHT = 500 #velikost okna
-PLAY_FIELD_HEIGHT = 420 #velikost hrací plochy
-PLAY_FIELD_WEIGHT = 420 
+PLAY_FIELD_HEIGHT = 420 #výška hrací plochy
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 CELL_SIZE = 20 #změnila jsem cell_size
-DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #kvůli nějakým důvodům jsem to přesunula z main()
+
+assert WINDOW_WIDTH % CELL_SIZE == 0, 'Window width must be a multiple of cell size.'
+assert WINDOW_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
+assert PLAY_FIELD_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
@@ -24,7 +27,7 @@ def main():
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
     board = Board()
     running = True
-    grid.draw_game() #test
+    grid.draw_field() #test
     while running:
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
@@ -33,12 +36,6 @@ def main():
         pygame.quit
 
 # grafika
-"""def draw_game():
-    DISPLAY_SURFACE.fill(BG_COLOR)
-    for x in range(0, WINDOW_WIDTH, CELL_SIZE): 
-        pygame.draw.line(DISPLAY_SURFACE, GRID_COLOR, (x, WINDOW_HEIGHT), (x, WINDOW_HEIGHT - PLAY_FIELD_HEIGHT))
-    for y in range(WINDOW_HEIGHT - PLAY_FIELD_HEIGHT, WINDOW_HEIGHT, CELL_SIZE): 
-        pygame.draw.line(DISPLAY_SURFACE, GRID_COLOR, (0, y), (WINDOW_WIDTH, y))"""
 
 spr_empty_grid = pygame.image.load("Sprites/empty.png")
 spr_grid = pygame.image.load("Sprites/Grid.png")
@@ -55,11 +52,19 @@ spr_mine_clicked = pygame.image.load("Sprites/mineClicked.png")
 
 #DISPLAY_SURFACE.blit(test, (0,0))
 class Grid:
-    def draw_game(self):
+    def __init__ (self):
+        self.board = []
+    
+
+    def draw_field(self): 
         DISPLAY_SURFACE.fill(BG_COLOR)
-        for x in range(0, WINDOW_WIDTH, CELL_SIZE):
-            for y in range (WINDOW_HEIGHT - PLAY_FIELD_HEIGHT, WINDOW_HEIGHT, CELL_SIZE):
-                DISPLAY_SURFACE.blit(spr_empty_grid, (x,y))
+        for tile in((x, y) for x in range(CELL_SIZE, WINDOW_WIDTH - CELL_SIZE, CELL_SIZE) for y in range(WINDOW_HEIGHT - PLAY_FIELD_HEIGHT, WINDOW_HEIGHT - CELL_SIZE, CELL_SIZE)):
+            DISPLAY_SURFACE.blit(spr_empty_grid, tile)
+
+            # + miny a čísla
+    """        if not self.tile_is_revealed(tile):  #dodělat
+                DISPLAY_SURFACE.blit(spr_grid, tile)"""
+
 
 grid = Grid()
 
