@@ -13,7 +13,7 @@ DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #kvůli
 
 assert WINDOW_WIDTH % CELL_SIZE == 0, 'Window width must be a multiple of cell size.'
 assert WINDOW_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
-assert PLAY_FIELD_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
+assert PLAY_FIELD_HEIGHT % CELL_SIZE == 0, 'Board height must be a multiple of cell size.'
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
@@ -62,7 +62,7 @@ class Grid:
             DISPLAY_SURFACE.blit(spr_empty_grid, tile)
 
             # + miny a čísla
-    """        if not self.tile_is_revealed(tile):  #dodělat
+    """        if not něco.tile_is_revealed(tile):  #dodělat
                 DISPLAY_SURFACE.blit(spr_grid, tile)"""
 
 
