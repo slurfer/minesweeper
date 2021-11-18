@@ -2,7 +2,7 @@ import random
 
 class Board:
     def __init__(self) -> None:
-        self.board = []
+        self.board = [] # game board
         self.board_width = 10
         self.board_height = 10
 
@@ -12,12 +12,48 @@ class Board:
             for board_x in range(self.board_width):
                 line.append(Tile(False, 0))
             self.board.append(line)
-        mine_coordinates = self.get_mines_coordinations()
-        self.board[3][4] = Tile(True)
+        mine_coordinates = self.generate_mines_coordinations()
+        for mine in mine_coordinates:
+            mine_x = mine[0]
+            mine_y = mine[1]
+            board.board[mine_y][mine_x] = Tile(True)
 
-    def get_mines_coordinations(self):
+        #RENDER NUMBERS
+        for board_y in range(self.board_height):
+            for board_x in range(self.board_width):
+                print(type(board.board[board_y][board_x].value) == None)
+                if not board.board[board_y][board_x].value == None:
+                    value = 0
+                    print(value)
+                    if board_y-1>0 and board_x-1>0:
+                        if str(board.board[board_y-1][board_x-1])=='x':
+                            value += 1
+                    if board_y>0 and board_x-1>0:
+                        if str(board.board[board_y][board_x-1])=='x':
+                            value += 1
+                    if board_y+1<len(board.board) and board_x-1>0:
+                        if str(board.board[board_y+1][board_x-1])=='x':
+                            value += 1
+                    if board_y+1<len(board.board) and board_x<len(board.board[0]):
+                        if str(board.board[board_y+1][board_x])=='x':
+                            value += 1
+                    if board_y+1<len(board.board) and board_x+1<len(board.board[0]):
+                        if str(board.board[board_y+1][board_x+1])=='x':
+                            value += 1
+                    if board_y>0 and board_x+1<len(board.board[0]):
+                        if str(board.board[board_y][board_x+1])=='x':
+                            value += 1
+                    if board_y-1>0 and board_x+1<len(board.board[0]):
+                        if str(board.board[board_y-1][board_x+1])=='x':
+                            value += 1
+                    if board_y-1>0 and board_x<len(board.board[0]):
+                        if str(board.board[board_y-1][board_x])=='x':
+                            value += 1
+                    board.board[board_y][board_x].value = value
+
+    def generate_mines_coordinations(self):
         mines = []
-        for a in range(10):
+        for a in range(20):
             while True:
                 coordination = (random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
                 if coordination in mines:
@@ -33,7 +69,7 @@ class Board:
             for cell in line:
                 output += str(cell) + '|'
             output += '\n'
-        return output
+        return output[:-1]
 
 class Tile:
     def __init__(self, is_mine, value = None) -> None:
@@ -48,3 +84,4 @@ class Tile:
 
 board = Board()
 board.generate_board()
+print(board)
