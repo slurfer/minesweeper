@@ -6,7 +6,7 @@ import os
 
 WINDOW_WIDTH = 420
 WINDOW_HEIGHT = 500 
-PLAY_FIELD_HEIGHT = 420 
+PLAY_FIELD_HEIGHT = 300 
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 CELL_SIZE = 30
@@ -46,13 +46,13 @@ class Graphics:
 
     def draw_board(self):
         DISPLAY_SURFACE.fill(BG_COLOR)
-        top_left = (0,0)
+        top_left = (CELL_SIZE,WINDOW_HEIGHT - (PLAY_FIELD_HEIGHT + CELL_SIZE))
         for x in range(board.board_width):
             for y in range(board.board_height):
                 sprite = self.values["Grid"] #změním, až na ně půjde kliknout
                 DISPLAY_SURFACE.blit(sprite, top_left)
                 top_left = top_left[0] + CELL_SIZE, top_left[1] 
-            top_left = 0, top_left[1] + CELL_SIZE
+            top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
 graphics = Graphics()
 
