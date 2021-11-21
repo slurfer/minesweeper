@@ -49,10 +49,11 @@ class Graphics:
             self.values[file_name.split(".")[0]] = value
 
     def draw_board(self):
+        DISPLAY_SURFACE.fill(BG_COLOR)
         top_left = (0,0)
         for x in range(board.board_width):
             for y in range(board.board_height):
-                sprite = self.values["Grid"]
+                sprite = self.values["Grid"] #změním, až na ně půjde kliknout
                 DISPLAY_SURFACE.blit(sprite, top_left)
                 top_left = top_left[0] + CELL_SIZE, top_left[1] 
             top_left = 0, top_left[1] + CELL_SIZE
