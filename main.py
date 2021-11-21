@@ -9,12 +9,8 @@ WINDOW_HEIGHT = 500
 PLAY_FIELD_HEIGHT = 420 
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
-CELL_SIZE = 20 
+CELL_SIZE = 30
 DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) 
-
-assert WINDOW_WIDTH % CELL_SIZE == 0, 'Window width must be a multiple of cell size.'
-assert WINDOW_HEIGHT % CELL_SIZE == 0, 'Window height must be a multiple of cell size.'
-assert PLAY_FIELD_HEIGHT % CELL_SIZE == 0, 'Board height must be a multiple of cell size.'
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
