@@ -34,6 +34,18 @@ def main():
         graphics.draw_board()
         pygame.quit
 
+def timer():
+    FPS_CLOCK = pygame.time.Clock()
+    time_limit = 120
+    start_time = time.time()
+    print(start_time)
+    while True:
+        FPS_CLOCK.tick(FPS)
+        elapsed_time = time.time() - start_time
+        print(time_limit - int(elapsed_time))
+        if elapsed_time > time_limit:
+            print("GAME OVER")
+            quit()
 
 class Graphics:
     def __init__(self):
