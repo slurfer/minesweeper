@@ -54,7 +54,25 @@ class Graphics:
                 top_left = top_left[0] + CELL_SIZE, top_left[1] 
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
+
+class Player:
+    def __init__(self, name) -> None:
+        self.score = 0
+        self.name = name
+    
+    def __str__(self) -> str:
+        return f"Score of player {self.name} is {self.score}"
+    
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o):
+            return self.score == __o.score
+        else:
+            False
+
 graphics = Graphics()
+
+
+
 
 if __name__ == "__main__":
     main()
