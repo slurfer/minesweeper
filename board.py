@@ -49,12 +49,10 @@ class Board:
                         if str(board.board[board_y-1][board_x])=='x':
                             value += 1
                     board.board[board_y][board_x].value = value
-                    print(self)
-                    print('\n')
 
     def generate_mines_coordinations(self):
         mines = []
-        for a in range(10):
+        for a in range(100):
             while True:
                 coordination = (random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
                 if coordination in mines:
