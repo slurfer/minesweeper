@@ -100,4 +100,3 @@ graphics = Graphics()
 
 if __name__ == "__main__":
     main()
-    timer()
