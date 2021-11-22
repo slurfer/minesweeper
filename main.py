@@ -30,6 +30,12 @@ def main():
     running = True
     graphics
     while running:
+        FPS_CLOCK.tick(FPS)
+        elapsed_time = time.time() - start_time
+        print(time_limit - int(elapsed_time))
+        if elapsed_time > time_limit:
+            print("GAME OVER")
+            quit()
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running = False
