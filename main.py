@@ -27,6 +27,7 @@ def main():
     running = True
     graphics
     while running:
+        FPS_CLOCK.tick(FPS)
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running = False
@@ -35,12 +36,10 @@ def main():
         pygame.quit
 
 def timer():
-    FPS_CLOCK = pygame.time.Clock()
     time_limit = 120
     start_time = time.time()
     print(start_time)
     while True:
-        FPS_CLOCK.tick(FPS)
         elapsed_time = time.time() - start_time
         print(time_limit - int(elapsed_time))
         if elapsed_time > time_limit:
