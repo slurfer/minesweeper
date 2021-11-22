@@ -12,12 +12,9 @@ BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) 
 FPS = 30
-<<<<<<< HEAD
 
 time_limit = 10
 start_time = time.time()
-=======
->>>>>>> main
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)

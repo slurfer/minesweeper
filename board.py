@@ -3,13 +3,8 @@ import random
 class Board:
     def __init__(self) -> None:
         self.board = [] # game board
-<<<<<<< HEAD
-        self.board_width = 10
-        self.board_height = 10
-=======
         self.board_width = 20
         self.board_height = 20
->>>>>>> main
 
     def generate_board(self):
         for board_y in range(self.board_height):
@@ -27,13 +22,8 @@ class Board:
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
                 if not board.board[board_y][board_x].value == None:
-<<<<<<< HEAD
-                    value = 0 #test
-                    # hg
-=======
                     value = 0
                     # 
->>>>>>> main
                     if board_y-1>0 and board_x-1>0:
                         if str(board.board[board_y-1][board_x-1])=='x':
                             value += 1
