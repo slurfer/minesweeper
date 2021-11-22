@@ -11,6 +11,7 @@ WINDOW_WIDTH = PLAY_FIELD_HEIGHT + 2 * CELL_SIZE
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) 
+FPS = 30
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
@@ -19,7 +20,7 @@ def main():
     global FPS_CLOCK, BASIC_FONT, BUTTONS
 
     pygame.init()
-    FPS_CLOCK = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+    FPS_CLOCK = pygame.time.Clock()
     pygame.display.set_caption("Minesweeper")
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
     board = Board()
@@ -99,3 +100,4 @@ graphics = Graphics()
 
 if __name__ == "__main__":
     main()
+    timer()
