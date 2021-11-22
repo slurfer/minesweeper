@@ -3,8 +3,8 @@ import random
 class Board:
     def __init__(self) -> None:
         self.board = [] # game board
-        self.board_width = 10
-        self.board_height = 10
+        self.board_width = 20
+        self.board_height = 20
 
     def generate_board(self):
         for board_y in range(self.board_height):
@@ -21,10 +21,9 @@ class Board:
         #RENDER NUMBERS
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
-                print(type(board.board[board_y][board_x].value) == None)
                 if not board.board[board_y][board_x].value == None:
                     value = 0
-                    print(value)
+                    # 
                     if board_y-1>0 and board_x-1>0:
                         if str(board.board[board_y-1][board_x-1])=='x':
                             value += 1
@@ -53,7 +52,7 @@ class Board:
 
     def generate_mines_coordinations(self):
         mines = []
-        for a in range(20):
+        for a in range(100):
             while True:
                 coordination = (random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
                 if coordination in mines:

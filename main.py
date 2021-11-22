@@ -4,12 +4,12 @@ from board import *
 import time
 import os
 
-WINDOW_WIDTH = 420
-WINDOW_HEIGHT = 500 
-PLAY_FIELD_HEIGHT = 300 
+CELL_SIZE = 30
+PLAY_FIELD_HEIGHT = board.board_height * CELL_SIZE
+WINDOW_HEIGHT = PLAY_FIELD_HEIGHT + CELL_SIZE + 200 #potom změnit 200 
+WINDOW_WIDTH = PLAY_FIELD_HEIGHT + 2 * CELL_SIZE
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
-CELL_SIZE = 30
 DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) 
 FPS = 30
 
@@ -72,11 +72,11 @@ class Graphics:
                     if sprite == 7:
                         sprite = self.values["grid7"]
                     if sprite == 8:
-                        sprite = self.values["grid8"]
-                #sprite = self.values["Grid"] #změním, až na ně půjde kliknout
+                        sprite = self.values["grid8"]      
+                        
                 DISPLAY_SURFACE.blit(sprite, top_left)
-                top_left = top_left[0] + CELL_SIZE, top_left[1] # pak vyměnit čísla asi
-            top_left = CELL_SIZE, top_left[1] + CELL_SIZE #i tady vyměnit čísla
+                top_left = top_left[0] + CELL_SIZE, top_left[1]
+            top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
 
 class Player:
@@ -100,4 +100,3 @@ graphics = Graphics()
 
 if __name__ == "__main__":
     main()
-    timer()
