@@ -22,7 +22,7 @@ class Board:
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
                 if not board.board[board_y][board_x].value == None:
-                    value = 0
+                    value = 500
                     # 
                     if board_y-1>0 and board_x-1>0:
                         if str(board.board[board_y-1][board_x-1])=='x':
