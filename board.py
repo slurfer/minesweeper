@@ -16,72 +16,70 @@ class Board:
         for mine in mine_coordinates:
             mine_x = mine[0]
             mine_y = mine[1]
-            board.board[mine_y][mine_x] = Tile(True)
+            self.board[mine_y][mine_x] = Tile(True)
 
         #RENDER NUMBERS
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
-                if not board.board[board_y][board_x].value == None:
+                if not self.board[board_y][board_x].value == None:
                     value = 0
                     
                     # 1__
                     # _x_
                     # ___
-                    if board_y-1>0 and board_x-1>0:
-                        if str(board.board[board_y-1][board_x-1])=='x':
+                    if board_y-1>=0 and board_x-1>=0:
+                        if str(self.board[board_y-1][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # 1x_
                     # ___
-                    if board_y>0 and board_x-1>0:
-                        if str(board.board[board_y][board_x-1])=='x':
+                    if board_y>=0 and board_x-1>=0:
+                        if str(self.board[board_y][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # 1__
-                    if board_y+1<len(board.board) and board_x-1>0:
-                        if str(board.board[board_y+1][board_x-1])=='x':
+                    if board_y+1<len(self.board) and board_x-1>=0:
+                        if str(self.board[board_y+1][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # _1_
-                    if board_y+1<len(board.board) and board_x<len(board.board[0]):
-                        if str(board.board[board_y+1][board_x])=='x':
+                    if board_y+1<len(self.board) and board_x<len(self.board[0]):
+                        if str(self.board[board_y+1][board_x])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # __1
-                    if board_y+1<len(board.board) and board_x+1<len(board.board[0]):
-                        if str(board.board[board_y+1][board_x+1])=='x':
+                    if board_y+1<len(self.board) and board_x+1<len(self.board[0]):
+                        if str(self.board[board_y+1][board_x+1])=='x':
                             value += 1
                     
                     # ___
                     # _x1
                     # ___
-                    if board_y>0 and board_x+1<len(board.board[0]):
-                        if str(board.board[board_y][board_x+1])=='x':
+                    if board_y>=0 and board_x+1<len(self.board[0]):
+                        if str(self.board[board_y][board_x+1])=='x':
                             value += 1
                     
                     # __1
                     # _x_
                     # ___
-                    if board_y-1>0 and board_x+1<len(board.board[0]):
-                        if str(board.board[board_y-1][board_x+1])=='x':
+                    if board_y-1>=0 and board_x+1<len(self.board[0]):
+                        if str(self.board[board_y-1][board_x+1])=='x':
                             value += 1
                     
                     # _1_
                     # _x_
                     # ___
-                    if board_y-1>0 and board_x<len(board.board[0]):
-                        if str(board.board[board_y-1][board_x])=='x':
+                    if board_y-1>=0 and board_x<len(self.board[0]):
+                        if str(self.board[board_y-1][board_x])=='x':
                             value += 1
-                    board.board[board_y][board_x].value = value
-                    print(board)
-                    print()
+                    self.board[board_y][board_x].value = value
 
     def generate_mines_coordinations(self):
         mines = []
@@ -113,7 +111,3 @@ class Tile:
             return 'x'
         else:
             return str(self.value)
-
-board = Board()
-board.generate_board()
-print(board)

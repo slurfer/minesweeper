@@ -4,6 +4,9 @@ from board import *
 import time
 import os
 
+board = Board()
+board.generate_board()
+print(board)
 CELL_SIZE = 30
 PLAY_FIELD_HEIGHT = board.board_height * CELL_SIZE
 WINDOW_HEIGHT = PLAY_FIELD_HEIGHT + CELL_SIZE + 200 #potom změnit 200 
@@ -12,9 +15,6 @@ BASIC_FONT = None
 BASIC_FONT_SIZE = 50
 DISPLAY_SURFACE = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) 
 FPS = 30
-
-time_limit = 10
-start_time = time.time()
 
 GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
@@ -30,12 +30,6 @@ def main():
     running = True
     graphics
     while running:
-        FPS_CLOCK.tick(FPS)
-        elapsed_time = time.time() - start_time
-        print(time_limit - int(elapsed_time))
-        if elapsed_time > time_limit:
-            print("GAME OVER")
-            quit()
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running = False
@@ -43,16 +37,6 @@ def main():
         graphics.draw_board()
         pygame.quit
 
-#def timer():
-#    time_limit = 120
-#    start_time = time.time()
-#    print(start_time)
-#    while True:
-#        elapsed_time = time.time() - start_time
-#        print(time_limit - int(elapsed_time))
-#        if elapsed_time > time_limit:
-#            print("GAME OVER")
-#            quit()
 
 class Graphics:
     def __init__(self):
