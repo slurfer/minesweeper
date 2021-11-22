@@ -71,8 +71,8 @@ class Graphics:
             for x in range(board.board_width):
                 sprite = board.board[y][x].value
                 if sprite == None: 
-                    sprite = 0
-                    pass 
+                    sprite = self.values["mine"]
+                    DISPLAY_SURFACE.blit(sprite, top_left)                    
                 if not sprite == None: 
                     if sprite == 0:
                         sprite = self.values["empty"] #změním, až na ně půjde kliknout
