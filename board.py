@@ -3,8 +3,8 @@ import random
 class Board:
     def __init__(self) -> None:
         self.board = [] # game board
-        self.board_width = 5
-        self.board_height = 5
+        self.board_width = 20
+        self.board_height = 20
 
     def generate_board(self):
         for board_y in range(self.board_height):
@@ -22,7 +22,7 @@ class Board:
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
                 if not board.board[board_y][board_x].value == None:
-                    value = 500
+                    value = 0
                     # 
                     if board_y-1>0 and board_x-1>0:
                         if str(board.board[board_y-1][board_x-1])=='x':
