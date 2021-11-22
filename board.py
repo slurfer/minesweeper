@@ -3,8 +3,8 @@ import random
 class Board:
     def __init__(self) -> None:
         self.board = [] # game board
-        self.board_width = 5
-        self.board_height = 5
+        self.board_width = 10
+        self.board_height = 10
 
     def generate_board(self):
         for board_y in range(self.board_height):
