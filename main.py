@@ -75,24 +75,24 @@ class Graphics:
                     DISPLAY_SURFACE.blit(sprite, top_left)                    
                 if not sprite == None: 
                     if sprite == 0:
-                        sprite = self.values["empty"] #změním, až na ně půjde kliknout
-                    if sprite == 1:
+                        sprite = self.values["empty"] 
+                    elif sprite == 1:
                         sprite = self.values["grid1"]
-                    if sprite == 2:
+                    elif sprite == 2:
                         sprite = self.values["grid2"]
-                    if sprite == 3:
+                    elif sprite == 3:
                         sprite = self.values["grid3"]
-                    if sprite == 4:
+                    elif sprite == 4:
                         sprite = self.values["grid4"]
-                    if sprite == 5:
+                    elif sprite == 5:
                         sprite = self.values["grid5"]
-                    if sprite == 6:
+                    elif sprite == 6:
                         sprite = self.values["grid6"]
-                    if sprite == 7:
+                    elif sprite == 7:
                         sprite = self.values["grid7"]
-                    if sprite == 8:
+                    elif sprite == 8:
                         sprite = self.values["grid8"]      
-                        
+
                 DISPLAY_SURFACE.blit(sprite, top_left)
                 top_left = top_left[0] + CELL_SIZE, top_left[1]
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE
