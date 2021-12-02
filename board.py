@@ -72,15 +72,17 @@ class Board:
         return output[:-1]
 
 class Tile:
-    def __init__(self, is_mine, value = None) -> None:
+    def __init__(self, is_mine, value = None, was_clicked = False) -> None:
         self.is_mine = is_mine
         self.value = value
+        self.was_clicked = was_clicked
     
     def __str__(self) -> str:
         if self.is_mine == True:
             return 'x'
         else:
             return str(self.value)
+
 
 board = Board()
 board.generate_board()
