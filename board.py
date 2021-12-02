@@ -23,7 +23,7 @@ class Board:
             for board_x in range(self.board_width):
                 if not board.board[board_y][board_x].value == None:
                     value = 0
-                    # 
+                    was_clicked = False
                     if board_y-1>0 and board_x-1>0:
                         if str(board.board[board_y-1][board_x-1])=='x':
                             value += 1
@@ -49,6 +49,7 @@ class Board:
                         if str(board.board[board_y-1][board_x])=='x':
                             value += 1
                     board.board[board_y][board_x].value = value
+                    board.board[board_y][board_x].was_clicked = was_clicked
 
     def generate_mines_coordinations(self):
         mines = []
