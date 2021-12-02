@@ -107,7 +107,6 @@ class Graphics:
                         elif sprite == 8:
                             sprite = self.values["grid8"]   
                         DISPLAY_SURFACE.blit(sprite, top_left)
-                        top_left = top_left[0] + CELL_SIZE, top_left[1]   
                 else:
                     sprite = self.values["Grid"]
                 DISPLAY_SURFACE.blit(sprite, top_left)
