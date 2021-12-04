@@ -23,12 +23,9 @@ class Board:
             for board_x in range(self.board_width):
                 if not self.board[board_y][board_x].value == None:
                     value = 0
-                    
-                    # 1__
-                    # _x_
-                    # ___
-                    if board_y-1>=0 and board_x-1>=0:
-                        if str(self.board[board_y-1][board_x-1])=='x':
+                    was_clicked = False 
+                    if board_y-1>0 and board_x-1>0:
+                        if str(board.board[board_y-1][board_x-1])=='x':
                             value += 1
                     
                     # ___
@@ -81,6 +78,7 @@ class Board:
                             value += 1
                     self.board[board_y][board_x].value = value
 
+
     def generate_mines_coordinations(self):
         mines = []
         for a in range(100):
@@ -95,6 +93,37 @@ class Board:
     
     def show_tile(self, x, y):
         active_tile = self.board[y, x]
+        output = []
+        
+        # ___
+        # 0x_
+        # ___
+        if x-1>0:
+            if self.board[y, x-1].value == 0:
+                output += self.show_tile(self, x-1, y)
+        
+        # _0_
+        # _x_
+        # ___
+        if x-1>0:
+            if self.board[y-1, x].value == 0:
+                output += self.show_tile(self, x, y-1)
+        
+        # ___
+        # _x0
+        # ___
+        if x+1<len(self.board[0]):
+            if self.board[y, x+1].value == 0:
+                output += self.show_tile(self, x+1, y)
+        
+        # ___
+        # _x_
+        # _0_
+        if y+1<len(self.board[0]):
+            if self.board[y+1, x].value == 0:
+                output += self.show_tile(self, x, y+1)
+            
+
         return [[1, 10], [2, 4], [3, 5]]
 
     def __str__(self) -> str:
@@ -106,12 +135,18 @@ class Board:
         return output[:-1]
 
 class Tile:
-    def __init__(self, is_mine, value = None) -> None:
+    def __init__(self, is_mine, value = None, was_clicked = False) -> None:
         self.is_mine = is_mine
         self.value = value
+        self.was_clicked = was_clicked
     
     def __str__(self) -> str:
         if self.is_mine == True:
             return 'x'
         else:
             return str(self.value)
+
+
+board = Board()
+board.generate_board()
+print(board)
