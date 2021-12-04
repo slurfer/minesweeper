@@ -17,16 +17,19 @@ time_limit = 10
 start_time = time.time()
 
 BG_COLOR = (240, 240, 240)
+PLAYER = (51, 51, 51)
 
 def main():
     global FPS_CLOCK, BASIC_FONT, BUTTONS
 
     pygame.init()
     FPS_CLOCK = pygame.time.Clock()
+    DISPLAY_SURFACE.fill(BG_COLOR)
     pygame.display.set_caption("Minesweeper")
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
     board = Board()
     running = True
+    player.turn()
     graphics.draw_board()
     while running:
         FPS_CLOCK.tick(FPS)
@@ -90,7 +93,6 @@ class Graphics:
 
 
     def draw_board(self):
-        DISPLAY_SURFACE.fill(BG_COLOR)
         top_left = (CELL_SIZE,WINDOW_HEIGHT - (PLAY_FIELD_HEIGHT + CELL_SIZE))
         for y in range(board.board_height):
             for x in range(board.board_width):
@@ -136,34 +138,35 @@ class Graphics:
 
     def end_screen(self):
         DISPLAY_SURFACE.blit(self.values["background"], (0,0))
-        msg_surface = BASIC_FONT.render('quit', True, BG_COLOR)
+        msg_surface = BASIC_FONT.render("quit", True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 700)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
-        msg_surface = BASIC_FONT.render('try again', True, BG_COLOR)
+        msg_surface = BASIC_FONT.render("coming soon", True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
 
 
-    #def game_ended():
+class Player:
+    def __init__(self):
+        self.player_1 = True
+        self.player_2 = True
 
+    def turn(self):
+        if self.player_1 == True:            
+            msg_surface = BASIC_FONT.render("Player 1", True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (30, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        if self.player_2 == True:
+            msg_surface = BASIC_FONT.render("Player 2", True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (432, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
-"""class Player:
-    def __init__(self, name) -> None:
-        self.score = 0
-        self.name = name
-    
-    def __str__(self) -> str:
-        return f"Score of player {self.name} is {self.score}"
-    
-    def __eq__(self, __o: object) -> bool:
-        if isinstance(__o):
-            return self.score == __o.score
-        else:
-            False"""
-
+player = Player()
 graphics = Graphics()
 
 
