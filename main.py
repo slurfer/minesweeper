@@ -5,7 +5,6 @@ import time
 import os
 
 board = Board()
-board.generate_board()
 CELL_SIZE = 30
 PLAY_FIELD_HEIGHT = board.board_height * CELL_SIZE
 WINDOW_HEIGHT = PLAY_FIELD_HEIGHT + CELL_SIZE + 210 # don't change 210
@@ -19,17 +18,19 @@ time_limit = 10
 start_time = time.time()
 
 BG_COLOR = (240, 240, 240)
+PLAYER = (51, 51, 51)
+PLAYER_NOT_ON_TURN =  (115, 115, 115)
 
 def main():
     global FPS_CLOCK, BASIC_FONT, BUTTONS
-
     pygame.init()
     FPS_CLOCK = pygame.time.Clock()
+    DISPLAY_SURFACE.fill(BG_COLOR)
     pygame.display.set_caption("Minesweeper")
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
-    board = Board()
     running = True
-    graphics
+    player.turn()
+    graphics.draw_board()
     while running:
         FPS_CLOCK.tick(FPS)
         """elapsed_time = time.time() - start_time
@@ -44,7 +45,6 @@ def main():
             if(event.type == pygame.MOUSEBUTTONDOWN):
                 tiles = pygame.mouse.get_pos()
                 graphics.handle_click(tiles)    
-        graphics.draw_board()
         pygame.quit
 
 #def timer():
@@ -73,21 +73,49 @@ class Graphics:
         y, x = yx
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
-                board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
-                """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
-                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell"""
-                self.draw_board()      
-                if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
-                    self.game_ended = True
+                if not self.game_ended == True:                    
+                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
                     self.draw_board()
-                    self.end_screen()
-                
-        else:
-            return None
+                    print(not board.is_generated)
+                    if not board.is_generated:
+                        board.generate_board(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
+                        board.is_generated = True
+                    self.draw_board()
+                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == 0:
+                        neighbors = board.show_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
+                        print(neighbors)
+                        for coordinations in neighbors:
+                            print(coordinations)
+                            x = coordinations[0]
+                            y = coordinations[1]
+                            board.board[y][x].was_clicked = True
+                            self.draw_board()
+
+                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
+                        self.game_ended = True
+                        self.draw_board()
+                        self.end_screen()
+
+                    if player.player_1 == True:
+                        player.player_1 = False
+                        player.player_2 = True
+                        player.turn()
+                    elif player.player_2 == True:
+                        player.player_2 = False
+                        player.player_1 = True
+                        player.turn()
+
+                if self.game_ended == True:   
+                    if y >= 700 and y <= 750:
+                        if x >= 30 and x <= 150:
+                            pygame.quit()
+                    else:
+                        return None
+            else:
+                return None
 
 
     def draw_board(self):
-        DISPLAY_SURFACE.fill(BG_COLOR)
         top_left = (CELL_SIZE,WINDOW_HEIGHT - (PLAY_FIELD_HEIGHT + CELL_SIZE))
         for y in range(board.board_height):
             for x in range(board.board_width):
@@ -127,36 +155,50 @@ class Graphics:
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
 
-    def handle_click(self, tiles):
-        yx = tiles[1] , tiles[0] 
+    def handle_click(self, pixels):
+        yx = pixels[1] , pixels[0] 
         self.click(yx)
 
     def end_screen(self):
-        
-        msg_surface = BASIC_FONT.render('idk', True, BG_COLOR)
+        DISPLAY_SURFACE.blit(self.values["background"], (0,0))
+        msg_surface = BASIC_FONT.render("quit", True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
-        msg_rect.topleft = (WINDOW_WIDTH - 200, WINDOW_HEIGHT - 30)
+        msg_rect.topleft = (30, 700)
+        DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        msg_surface = BASIC_FONT.render("coming soon", True, BG_COLOR)
+        msg_rect = msg_surface.get_rect()
+        msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
 
 
-    #def game_ended():
+class Player:
+    def __init__(self):
+        self.player_1 = True
+        self.player_2 = False
+
+    def turn(self):
+        if self.player_1 == True:            
+            msg_surface = BASIC_FONT.render("Player 1", True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (30, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            msg_surface = BASIC_FONT.render("Player 2", True, PLAYER_NOT_ON_TURN)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (432, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        if self.player_2 == True:
+            msg_surface = BASIC_FONT.render("Player 2", True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (432, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            msg_surface = BASIC_FONT.render("Player 1", True, PLAYER_NOT_ON_TURN)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (30, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
 
-"""class Player:
-    def __init__(self, name) -> None:
-        self.score = 0
-        self.name = name
-    
-    def __str__(self) -> str:
-        return f"Score of player {self.name} is {self.score}"
-    
-    def __eq__(self, __o: object) -> bool:
-        if isinstance(__o):
-            return self.score == __o.score
-        else:
-            False"""
-
+player = Player()
 graphics = Graphics()
 
 
