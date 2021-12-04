@@ -16,7 +16,6 @@ FPS = 30
 time_limit = 10
 start_time = time.time()
 
-GRID_COLOR = (138, 138, 138)
 BG_COLOR = (240, 240, 240)
 
 def main():
@@ -74,11 +73,13 @@ class Graphics:
             if x >= 30 and x <= 630:
                 board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
                 """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
-                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell
-                    """   
+                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell"""
+                self.draw_board()      
                 if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
                     self.game_ended = True
-                self.draw_board()
+                    self.draw_board()
+                    self.end_screen()
+                
         else:
             return None
 
@@ -128,11 +129,19 @@ class Graphics:
         yx = tiles[1] , tiles[0] 
         self.click(yx)
 
+    def end_screen(self):
+        
+        msg_surface = BASIC_FONT.render('idk', True, BG_COLOR)
+        msg_rect = msg_surface.get_rect()
+        msg_rect.topleft = (WINDOW_WIDTH - 200, WINDOW_HEIGHT - 30)
+        DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+
+
 
     #def game_ended():
 
 
-class Player:
+"""class Player:
     def __init__(self, name) -> None:
         self.score = 0
         self.name = name
@@ -144,7 +153,7 @@ class Player:
         if isinstance(__o):
             return self.score == __o.score
         else:
-            False
+            False"""
 
 graphics = Graphics()
 
