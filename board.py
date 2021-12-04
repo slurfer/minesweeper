@@ -96,6 +96,7 @@ class Board:
                             value += 1
                     self.board[board_y][board_x].value = value
         print(self)
+        self.is_generated = True
         return self
 
 
@@ -133,7 +134,7 @@ class Board:
             mines.append(coordination)
         return mines
     
-    def get_zero_area_from_coordinations(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
+    def get_continous_area_of_zeros(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
         # x = coordinations.x
         # y = coordinations.y
         active_tile = self.board[coords.y][coords.x]
