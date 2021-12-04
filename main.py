@@ -27,7 +27,7 @@ def main():
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
     board = Board()
     running = True
-    graphics
+    graphics.draw_board()
     while running:
         FPS_CLOCK.tick(FPS)
         """elapsed_time = time.time() - start_time
@@ -42,7 +42,6 @@ def main():
             if(event.type == pygame.MOUSEBUTTONDOWN):
                 tiles = pygame.mouse.get_pos()
                 graphics.handle_click(tiles)    
-        graphics.draw_board()
         pygame.quit
 
 #def timer():
@@ -71,17 +70,23 @@ class Graphics:
         y, x = yx
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
-                board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
-                """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
-                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell"""
-                self.draw_board()      
-                if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
-                    self.game_ended = True
-                    self.draw_board()
-                    self.end_screen()
-                
-        else:
-            return None
+                if not self.game_ended == True:
+                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
+                    """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
+                        board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell"""
+                    self.draw_board()      
+                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
+                        self.game_ended = True
+                        self.draw_board()
+                        self.end_screen()
+                if self.game_ended == True:   
+                    if y >= 700 and y <= 750:
+                        if x >= 30 and x <= 150:
+                            pygame.quit()
+                    else:
+                        return None
+            else:
+                return None
 
 
     def draw_board(self):
@@ -130,10 +135,14 @@ class Graphics:
         self.click(yx)
 
     def end_screen(self):
-        
-        msg_surface = BASIC_FONT.render('idk', True, BG_COLOR)
+        DISPLAY_SURFACE.blit(self.values["background"], (0,0))
+        msg_surface = BASIC_FONT.render('quit', True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
-        msg_rect.topleft = (WINDOW_WIDTH - 200, WINDOW_HEIGHT - 30)
+        msg_rect.topleft = (30, 700)
+        DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        msg_surface = BASIC_FONT.render('try again', True, BG_COLOR)
+        msg_rect = msg_surface.get_rect()
+        msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
 
