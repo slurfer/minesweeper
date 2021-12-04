@@ -18,17 +18,17 @@ start_time = time.time()
 
 BG_COLOR = (240, 240, 240)
 PLAYER = (51, 51, 51)
+PLAYER_NOT_ON_TURN =  (115, 115, 115)
 
 def main():
     global FPS_CLOCK, BASIC_FONT, BUTTONS
-
     pygame.init()
     FPS_CLOCK = pygame.time.Clock()
     DISPLAY_SURFACE.fill(BG_COLOR)
     pygame.display.set_caption("Minesweeper")
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
-    board = Board()
     running = True
+    board.get_zero_coordinations()
     player.turn()
     graphics.draw_board()
     while running:
@@ -73,15 +73,32 @@ class Graphics:
         y, x = yx
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
-                if not self.game_ended == True:
+                if not self.game_ended == True:                    
                     board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
-                    """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
-                        board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell"""
-                    self.draw_board()      
+                    self.draw_board()
+                    print(board.get_zero_coordinations())
+                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == 0:
+                        neighbors = board.show_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7, [x // CELL_SIZE - 1, y // CELL_SIZE - 7])
+                        for coordinations in neighbors:
+                            x = coordinations[0]
+                            y = coordinations[1]
+                            board.board[y][x].was_clicked = True
+                            self.draw_board()
+
                     if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
                         self.game_ended = True
                         self.draw_board()
                         self.end_screen()
+
+                    if player.player_1 == True:
+                        player.player_1 = False
+                        player.player_2 = True
+                        player.turn()
+                    elif player.player_2 == True:
+                        player.player_2 = False
+                        player.player_1 = True
+                        player.turn()
+
                 if self.game_ended == True:   
                     if y >= 700 and y <= 750:
                         if x >= 30 and x <= 150:
@@ -132,13 +149,13 @@ class Graphics:
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
 
-    def handle_click(self, tiles):
-        yx = tiles[1] , tiles[0] 
+    def handle_click(self, pixels):
+        yx = pixels[1] , pixels[0] 
         self.click(yx)
 
     def end_screen(self):
         DISPLAY_SURFACE.blit(self.values["background"], (0,0))
-        msg_surface = BASIC_FONT.render("quit", True, BG_COLOR)
+        msg_surface = BASIC_FONT.render("exit", True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 700)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
@@ -146,13 +163,24 @@ class Graphics:
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        if player.player_1 == True:
+            msg_surface = BASIC_FONT.render("Player 2 has won", True, BG_COLOR)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (121, 395)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        else:
+            msg_surface = BASIC_FONT.render("Player 1 has won", True, BG_COLOR)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (121, 395)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+
 
 
 
 class Player:
     def __init__(self):
         self.player_1 = True
-        self.player_2 = True
+        self.player_2 = False
 
     def turn(self):
         if self.player_1 == True:            
@@ -160,11 +188,20 @@ class Player:
             msg_rect = msg_surface.get_rect()
             msg_rect.topleft = (30, 30)
             DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            msg_surface = BASIC_FONT.render("Player 2", True, PLAYER_NOT_ON_TURN)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (432, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
         if self.player_2 == True:
             msg_surface = BASIC_FONT.render("Player 2", True, PLAYER)
             msg_rect = msg_surface.get_rect()
             msg_rect.topleft = (432, 30)
             DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            msg_surface = BASIC_FONT.render("Player 1", True, PLAYER_NOT_ON_TURN)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (30, 30)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+
 
 player = Player()
 graphics = Graphics()
