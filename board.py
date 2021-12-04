@@ -23,12 +23,18 @@ class Board:
             for board_x in range(self.board_width):
                 if not self.board[board_y][board_x].value == None:
                     value = 0
+<<<<<<< HEAD
                     
                     # 1__
                     # _x_
                     # ___
                     if board_y-1>=0 and board_x-1>=0:
                         if str(self.board[board_y-1][board_x-1])=='x':
+=======
+                    was_clicked = False 
+                    if board_y-1>0 and board_x-1>0:
+                        if str(board.board[board_y-1][board_x-1])=='x':
+>>>>>>> Terka
                             value += 1
                     
                     # ___
@@ -81,6 +87,7 @@ class Board:
                             value += 1
                     self.board[board_y][board_x].value = value
 
+
     def generate_mines_coordinations(self):
         mines = []
         for a in range(100):
@@ -102,12 +109,21 @@ class Board:
         return output[:-1]
 
 class Tile:
-    def __init__(self, is_mine, value = None) -> None:
+    def __init__(self, is_mine, value = None, was_clicked = False) -> None:
         self.is_mine = is_mine
         self.value = value
+        self.was_clicked = was_clicked
     
     def __str__(self) -> str:
         if self.is_mine == True:
             return 'x'
         else:
             return str(self.value)
+<<<<<<< HEAD
+=======
+
+
+board = Board()
+board.generate_board()
+print(board)
+>>>>>>> Terka
