@@ -6,7 +6,7 @@ import os
 
 CELL_SIZE = 30
 PLAY_FIELD_HEIGHT = board.board_height * CELL_SIZE
-WINDOW_HEIGHT = PLAY_FIELD_HEIGHT + CELL_SIZE + 200 #potom změnit 200 
+WINDOW_HEIGHT = PLAY_FIELD_HEIGHT + CELL_SIZE + 210 # don't change 210
 WINDOW_WIDTH = PLAY_FIELD_HEIGHT + 2 * CELL_SIZE
 BASIC_FONT = None
 BASIC_FONT_SIZE = 50
@@ -60,7 +60,8 @@ def main():
 class Graphics:
     def __init__(self):
         self.load_sprites()
-        
+        self.game_ended = False
+
     def load_sprites(self):
         self.values = {}       
         for file_name in os.listdir("sprites"):
@@ -69,12 +70,17 @@ class Graphics:
 
     def click(self, yx):
         y, x = yx
-        for y in (y, y):
-            for x in (x, x):
-                board.board[y][x].was_clicked = True #board.board[y][x].
+        if y >= 200 and y <= 800:
+            if x >= 30 and x <= 630:
+                board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
+                """if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value is 0:
+                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1] = cell
+                    """   
+                if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
+                    self.game_ended = True
                 self.draw_board()
-
-        #když kliknu, objeví se tile, kryž je tam nudla, objeví se jich víc
+        else:
+            return None
 
 
     def draw_board(self):
@@ -86,7 +92,7 @@ class Graphics:
                     sprite = board.board[y][x].value
                     if sprite == None: 
                         sprite = self.values["mine"]
-                        DISPLAY_SURFACE.blit(sprite, top_left)                    
+                        DISPLAY_SURFACE.blit(sprite, top_left)                   
                     if not sprite == None: 
                         if sprite == 0:
                             sprite = self.values["empty"] 
@@ -109,13 +115,21 @@ class Graphics:
                         DISPLAY_SURFACE.blit(sprite, top_left)
                 else:
                     sprite = self.values["Grid"]
-                DISPLAY_SURFACE.blit(sprite, top_left)
+                    DISPLAY_SURFACE.blit(sprite, top_left)
+                    
+                if self.game_ended == True:
+                    if board.board[y][x].value == None:
+                        DISPLAY_SURFACE.blit(self.values["mine"], top_left)
                 top_left = top_left[0] + CELL_SIZE, top_left[1]
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE
 
+
     def handle_click(self, tiles):
-        yx = tiles[1] // CELL_SIZE, tiles[0] // CELL_SIZE
+        yx = tiles[1] , tiles[0] 
         self.click(yx)
+
+
+    #def game_ended():
 
 
 class Player:
