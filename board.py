@@ -1,6 +1,21 @@
 import random
 from typing import List, Tuple
 
+
+class Coordinations:
+    def __init__(self, x:int, y:int) -> None:
+        self.x:int = x
+        self.y:int = y
+    
+    def __eq__(self, __o: object) -> bool:
+        if isinstance(__o, Coordinations):
+            return self.x == __o.x and self.y == __o.y
+        return False
+    
+    def __str__(self) -> str:
+        return f'{{x: {str(self.x)}, y: {str(self.y)}}}'
+
+
 class Board:
     def __init__(self) -> None:
         self.board:List[Tile] = [] # game board
@@ -13,12 +28,10 @@ class Board:
                 line.append(Tile(False, 0))
             self.board.append(line)
 
-    def generate_board(self, seed_x:int, seed_y:int):
-        mine_coordinates = self.generate_mines_coordinations(seed_x, seed_y)
+    def generate_board(self, seed_coordinations: Coordinations):
+        mine_coordinates = self.generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
-            mine_x = mine[0]
-            mine_y = mine[1]
-            self.board[mine_y][mine_x] = Tile(True)
+            self.board[mine.y][mine.x] = Tile(True)
 
         #RENDER NUMBERS
         for board_y in range(self.board_height):
@@ -86,21 +99,23 @@ class Board:
         return self
 
 
-    def get_zero_coordinations(self)->Tuple[int, int]:
+    def get_zero_coordinations(self)->List[Coordinations]:
         output = []
         for row in range(len(self.board)):
             for cell in range(len(self.board)):
                 if self.board[row][cell].value == 0:
-                    output.append((cell, row))
+                    output.append(Coordinations(cell, row))
         return output
     
-    def generate_mines_coordinations(self, seed_x:int, seed_y:int)->List[Tuple[int, int]]:
+    def generate_mines_coordinations(self, seed_coordinates: Coordinations)->List[Coordinations]:
         mines = []
+        seed_x = seed_coordinates.x
+        seed_y = seed_coordinates.y
         protected_area = [[seed_x, seed_y], [seed_x-1, seed_y-1], [seed_x-1, seed_y], [seed_x-1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y-1], [seed_x, seed_y-1]]
-        protected_area = [(seed_x, seed_y)]
+        protected_area = [Coordinations(seed_x, seed_y)]
         for a in range(100):
             while True:
-                coordination = (random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
+                coordination = Coordinations(random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
                 if coordination in mines or coordination in protected_area:
                     continue
                 else:
@@ -108,92 +123,93 @@ class Board:
             mines.append(coordination)
         return mines
     
-    def get_zero_area_from_coordinations(self, x:int, y:int, output: List[Tuple[int, int]])->List[Tuple[int, int]]:
-        active_tile = self.board[y][x]
+    def get_zero_area_from_coordinations(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
+        # x = coordinations.x
+        # y = coordinations.y
+        active_tile = self.board[coords.y][coords.x]
         value = active_tile.value
-
         # ___
         # 0x_
         # ___
-        if x-1>=0 and not (x-1, y) in output:
-            if self.board[y][x-1].value == 0:
-                output += [(x-1, y)]
-                output = self.get_zero_area_from_coordinations(x-1, y, output)
+        if coords.x-1>=0 and not Coordinations(coords.x-1, coords.y) in output:
+            if self.board[coords.y][coords.x-1].value == 0:
+                output += [Coordinations(coords.x-1, coords.y)]
+                output = self.get_zero_area_from_coordinations(Coordinations(coords.x-1, coords.y), output)
         
         # _0_
         # _x_
         # ___
-        if y-1>=0:
-            if self.board[y-1][x].value == 0 and not (x, y-1) in output:
-                output += [(x, y-1)]
-                output = self.get_zero_area_from_coordinations(x, y-1, output)
+        if coords.y-1>=0:
+            if self.board[coords.y-1][coords.x].value == 0 and not Coordinations(coords.x, coords.y-1) in output:
+                output += [Coordinations(coords.x, coords.y-1)]
+                output = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y-1), output)
         
         # ___
         # _x0
         # ___
-        if x+1<len(self.board[0]) and not (x+1, y) in output:
-            if self.board[y][x+1].value == 0:
-                output += [(x+1, y)]
-                output = self.get_zero_area_from_coordinations(x+1, y, output)
+        if coords.x+1<len(self.board[0]) and not Coordinations(coords.x+1, coords.y) in output:
+            if self.board[coords.y][coords.x+1].value == 0:
+                output += [Coordinations(coords.x+1, coords.y)]
+                output = self.get_zero_area_from_coordinations(Coordinations(coords.x+1, coords.y), output)
         
         # ___
         # _x_
         # _0_
-        if y+1<len(self.board) and not (x, y+1) in output:
-            if self.board[y+1][x].value == 0:
-                output += [(x, y+1)]
-                output = self.get_zero_area_from_coordinations(x, y+1, output)
+        if coords.y+1<len(self.board) and not Coordinations(coords.x, coords.y+1) in output:
+            if self.board[coords.y+1][coords.x].value == 0:
+                output += [Coordinations(coords.x, coords.y+1)]
+                output = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y+1), output)
 
         return output
     
-    def show_tile(self, x:int, y:int)->List[Tuple[int, int]]:
-        zeros = self.get_zero_area_from_coordinations(x, y, [(x, y)])
+    def show_tile(self, coords:Coordinations)->List[Coordinations]:
+        zeros = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y), [Coordinations(coords.x, coords.y)])
         output = []
         for tile in zeros:
             output.append(tile)
         for tile in zeros:
-            x = tile[0]
-            y = tile[1]
+            x = tile.x
+            y = tile.y
             # 1__
             # _0_
             # ___
             if x-1>=0 and y-1>=0 and not (x-1, y-1) in output:
-                output.append((x-1, y-1))
+                output.append(Coordinations(x-1, y-1))
             # ___
             # 10_
             # ___
             if x-1>=0 and not (x-1, y) in output:
-                output.append((x-1, y))
+                output.append(Coordinations(x-1, y))
             # ___
             # _0_
             # 1__
             if x-1>=0 and y+1<len(self.board) and not (x-1, y+1) in output:
-                output.append((x-1, y+1))
+                output.append(Coordinations(x-1, y+1))
             # ___
             # _0_
             # _1_
             if y+1<len(self.board) and not (x, y+1) in output:
-                output.append((x, y+1))
+                output.append(Coordinations(x, y+1))
             # ___
             # _0_
             # __1
             if x+1<len(self.board[0]) and y+1<len(self.board) and not (x+1, y+1) in output:
-                output.append((x+1, y+1))
+                output.append(Coordinations(x+1, y+1))
             # ___
             # _01
             # ___
             if x+1<len(self.board[0]) and not (x+1, y) in output:
-                output.append((x+1, y))
+                output.append(Coordinations(x+1, y))
             # __1
             # _0_
             # ___
             if x+1<len(self.board[0]) and y-1 >= 0 and not (x+1, y-1) in output:
-                output.append((x+1, y-1))
+                output.append(Coordinations(x+1, y-1))
             # _1_
             # _0_
             # ___
             if y-1 >= 0 and not (x, y-1) in output:
-                output.append((x, y-1))
+                output.append(Coordinations(x, y-1))
 
 
             
@@ -221,6 +237,7 @@ class Tile:
             return 'x'
         else:
             return str(self.value)
+
 
 
 """ board = Board()
