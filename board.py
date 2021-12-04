@@ -111,8 +111,18 @@ class Board:
         mines = []
         seed_x = seed_coordinates.x
         seed_y = seed_coordinates.y
-        protected_area = [[seed_x, seed_y], [seed_x-1, seed_y-1], [seed_x-1, seed_y], [seed_x-1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y-1], [seed_x, seed_y-1]]
-        protected_area = [Coordinations(seed_x, seed_y)]
+        protected_area = [
+            Coordinations(seed_x, seed_y),
+            Coordinations(seed_x-1, seed_y-1),
+            Coordinations(seed_x-1, seed_y),
+            Coordinations(seed_x-1, seed_y+1),
+            Coordinations(seed_x+1, seed_y),
+            Coordinations(seed_x+1, seed_y+1),
+            Coordinations(seed_x+1, seed_y),
+            Coordinations(seed_x+1, seed_y-1),
+            Coordinations(seed_x, seed_y-1)
+        ]
+        # protected_area = [Coordinations(seed_x, seed_y)]
         for a in range(100):
             while True:
                 coordination = Coordinations(random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
