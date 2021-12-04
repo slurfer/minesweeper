@@ -1,5 +1,5 @@
 import random
-from typing import List
+from typing import List, Tuple
 
 class Board:
     def __init__(self) -> None:
@@ -13,7 +13,7 @@ class Board:
                 line.append(Tile(False, 0))
             self.board.append(line)
 
-    def generate_board(self, seed_x, seed_y):
+    def generate_board(self, seed_x:int, seed_y:int):
         mine_coordinates = self.generate_mines_coordinations(seed_x, seed_y)
         for mine in mine_coordinates:
             mine_x = mine[0]
@@ -83,17 +83,18 @@ class Board:
                             value += 1
                     self.board[board_y][board_x].value = value
         print(self)
+        return self
 
 
-    def get_zero_coordinations(self)->List[int]:
+    def get_zero_coordinations(self)->Tuple[int, int]:
         output = []
         for row in range(len(self.board)):
             for cell in range(len(self.board)):
                 if self.board[row][cell].value == 0:
-                    output.append([cell, row])
+                    output.append((cell, row))
         return output
     
-    def generate_mines_coordinations(self, seed_x, seed_y):
+    def generate_mines_coordinations(self, seed_x:int, seed_y:int)->List[Tuple[int, int]]:
         mines = []
         protected_area = [[seed_x, seed_y], [seed_x-1, seed_y-1], [seed_x-1, seed_y], [seed_x-1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y+1], [seed_x+1, seed_y], [seed_x+1, seed_y-1], [seed_x, seed_y-1]]
         protected_area = [(seed_x, seed_y)]
@@ -107,7 +108,7 @@ class Board:
             mines.append(coordination)
         return mines
     
-    def get_zero_area_from_coordinations(self, x:int, y:int, output):
+    def get_zero_area_from_coordinations(self, x:int, y:int, output: List[Tuple[int, int]])->List[Tuple[int, int]]:
         active_tile = self.board[y][x]
         value = active_tile.value
 
@@ -145,7 +146,7 @@ class Board:
 
         return output
     
-    def show_tile(self, x, y):
+    def show_tile(self, x:int, y:int)->List[Tuple[int, int]]:
         zeros = self.get_zero_area_from_coordinations(x, y, [(x, y)])
         output = []
         for tile in zeros:
@@ -206,6 +207,8 @@ class Board:
                 output += str(cell) + '|'
             output += '\n'
         return output[:-1]
+
+
 
 class Tile:
     def __init__(self, is_mine, value = None, was_clicked = False) -> None:
