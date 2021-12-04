@@ -93,6 +93,10 @@ class Board:
             mines.append(coordination)
         return mines
     
+    def show_tile(self, x, y):
+        active_tile = self.board[y, x]
+        return [[1, 10], [2, 4], [3, 5]]
+
     def __str__(self) -> str:
         output = ''
         for line in self.board:
