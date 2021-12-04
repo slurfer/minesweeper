@@ -78,7 +78,6 @@ class Graphics:
                     self.draw_board()
                     if not board.is_generated:
                         board.generate_board(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7))
-                        board.is_generated = True
                     self.draw_board()
                     if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == 0:
                         neighbors = board.show_tile(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7))
