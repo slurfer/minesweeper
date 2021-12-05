@@ -42,15 +42,14 @@ class Board:
             self.board.append(line)
 
 
-    def click(self, coords:Coordinations):
+    def click(self, x:int, y:int):
+        coords = Coordinations(x, y)
         if not self.__is_generated:
             self.__generate_board(coords)
         if self.board[coords.y][coords.x].value == 0:
             discovered_tiles = self.__get_continous_area(coords)
             for coordinations in discovered_tiles:
-                x = coordinations.x
-                y = coordinations.y
-                self.board[y][x].was_clicked = True
+                self.board[coordinations.y][coordinations.x].was_clicked = True
         else:
             self.board[coords.y][coords.x].was_clicked = True
     

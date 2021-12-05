@@ -74,7 +74,7 @@ class Graphics:
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
                 if not self.game_ended == True:                    
-                    board.click(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7)) 
+                    board.click(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
                     self.draw_board()
 
                     if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
