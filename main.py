@@ -33,30 +33,14 @@ def main():
     graphics.draw_board()
     while running:
         FPS_CLOCK.tick(FPS)
-        """elapsed_time = time.time() - start_time
-        print(time_limit - int(elapsed_time))
-        if elapsed_time > time_limit:
-            print("GAME OVER")
-            quit()"""
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running = False
             pygame.display.flip()
             if(event.type == pygame.MOUSEBUTTONDOWN):
                 tiles = pygame.mouse.get_pos()
-                graphics.handle_click(tiles)    
-        pygame.quit
+                graphics.handle_click(tiles)   
 
-#def timer():
-#    time_limit = 120
-#    start_time = time.time()
-#    print(start_time)
-#    while True:
-#        elapsed_time = time.time() - start_time
-#        print(time_limit - int(elapsed_time))
-#        if elapsed_time > time_limit:
-#            print("GAME OVER")
-#            quit()
 
 class Graphics:
     def __init__(self):
@@ -76,12 +60,11 @@ class Graphics:
                 if not self.game_ended == True:                    
                     board.click(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
                     self.draw_board()
-
                     if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
                         self.game_ended = True
                         self.draw_board()
                         self.end_screen()
-
+                    #if board._Board__board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked == False:
                     if player.player_1 == True:
                         player.player_1 = False
                         player.player_2 = True
@@ -90,11 +73,14 @@ class Graphics:
                         player.player_2 = False
                         player.player_1 = True
                         player.turn()
-
                 if self.game_ended == True:   
-                    if y >= 700 and y <= 750:
-                        if x >= 30 and x <= 150:
-                            pygame.quit()
+                    if 750 >= y >= 700:
+                        if 150 >= x >= 30:
+                            raise ValueError ("Game quit")
+                    if 810 >= y >= 760:
+                        if 271 >= x >= 30:
+                            self.game_ended = False
+                            self.reset_board()
                     else:
                         return None
             else:
@@ -151,12 +137,28 @@ class Graphics:
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 700)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
-        msg_surface = BASIC_FONT.render("coming soon", True, BG_COLOR)
+        msg_surface = BASIC_FONT.render("new game", True, BG_COLOR)
         msg_rect = msg_surface.get_rect()
         msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        if player.player_1 == True:
+            msg_surface = BASIC_FONT.render("Player 2 has won", True, BG_COLOR)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (121, 395)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+        else:
+            msg_surface = BASIC_FONT.render("Player 1 has won", True, BG_COLOR)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (121, 395)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
-
+    def reset_board(self):
+        board.reset()
+        DISPLAY_SURFACE.fill(BG_COLOR)
+        player.player_1 = True
+        player.player_2 = False
+        player.turn()
+        self.draw_board()      
 
 class Player:
     def __init__(self):
