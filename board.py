@@ -43,6 +43,7 @@ class Board:
 
 
     def click(self, x:int, y:int):
+        """ Handle click on a tile """
         coords = Coordinations(x, y)
         if not self.__is_generated:
             self.__generate_board(coords)
@@ -55,6 +56,7 @@ class Board:
         
     
     def reset(self):
+        """ Reset board for a new game """
         self.__is_generated = False
         self.__board = []
         for board_y in range(self.board_height):
@@ -64,6 +66,7 @@ class Board:
             self.__board.append(line)
     
     def get_zero_coordinations(self)->List[Coordinations]:
+        """ Return list of coordinatios of all tiles with value 0 """
         output = []
         for row in range(len(self.__board)):
             for cell in range(len(self.__board)):
@@ -72,10 +75,12 @@ class Board:
         return output
     
     def get_tile(self, x:int, y: int)-> Tile:
+        """ Return tile from specific coordinations """
         return self.__board[y][x]
     
     
     def __generate_board(self, seed_coordinations: Coordinations):
+        """ Assing mines and values to board """
         mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
             self.__board[mine.y][mine.x] = Tile(True)
@@ -148,6 +153,7 @@ class Board:
 
     
     def __generate_mines_coordinations(self, seed_coordinates: Coordinations)->List[Coordinations]:
+        """ Generate mines for gameboard """
         mines = []
         seed_x = seed_coordinates.x
         seed_y = seed_coordinates.y
@@ -174,6 +180,7 @@ class Board:
         return mines
     
     def __get_continous_area_of_zeros(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
+        """ Return list of Coordinatios of area of continous zeros. """
         # x = coordinations.x
         # y = coordinations.y
         active_tile = self.__board[coords.y][coords.x]
@@ -244,6 +251,7 @@ class Board:
     
     
     def __get_continous_area(self, coords:Coordinations)->List[Coordinations]:
+        """ Return list of Coordinatios of area of continous zeros. """
         zeros = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y), [Coordinations(coords.x, coords.y)])
         output = []
         for tile in zeros:
