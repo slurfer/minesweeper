@@ -31,7 +31,7 @@ class Tile:
 
 class Board:
     def __init__(self) -> None:
-        self.board:List[Tile] = [] # game board
+        self.__board:List[Tile] = [] # game board
         self.board_width = 20
         self.board_height = 20
         self.__is_generated = False
@@ -39,109 +39,109 @@ class Board:
             line = []
             for board_x in range(self.board_width):
                 line.append(Tile(False, 0))
-            self.board.append(line)
+            self.__board.append(line)
 
 
     def click(self, x:int, y:int):
         coords = Coordinations(x, y)
         if not self.__is_generated:
             self.__generate_board(coords)
-        if self.board[coords.y][coords.x].value == 0:
+        if self.__board[coords.y][coords.x].value == 0:
             discovered_tiles = self.__get_continous_area(coords)
             for coordinations in discovered_tiles:
-                self.board[coordinations.y][coordinations.x].was_clicked = True
+                self.__board[coordinations.y][coordinations.x].was_clicked = True
         else:
-            self.board[coords.y][coords.x].was_clicked = True
+            self.__board[coords.y][coords.x].was_clicked = True
         
     
     def reset(self):
         self.__is_generated = False
-        self.board = []
+        self.__board = []
         for board_y in range(self.board_height):
             line = []
             for board_x in range(self.board_width):
                 line.append(Tile(False, 0))
-            self.board.append(line)
+            self.__board.append(line)
     
     def get_zero_coordinations(self)->List[Coordinations]:
         output = []
-        for row in range(len(self.board)):
-            for cell in range(len(self.board)):
-                if self.board[row][cell].value == 0:
+        for row in range(len(self.__board)):
+            for cell in range(len(self.__board)):
+                if self.__board[row][cell].value == 0:
                     output.append(Coordinations(cell, row))
         return output
     
     def get_tile(self, x:int, y: int)-> Tile:
-        return self.board[y][x]
+        return self.__board[y][x]
     
     
     def __generate_board(self, seed_coordinations: Coordinations):
         mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
-            self.board[mine.y][mine.x] = Tile(True)
+            self.__board[mine.y][mine.x] = Tile(True)
 
         #RENDER NUMBERS
         for board_y in range(self.board_height):
             for board_x in range(self.board_width):
-                if not self.board[board_y][board_x].value == None:
+                if not self.__board[board_y][board_x].value == None:
                     value = 0
                     was_clicked = False 
                     # ___
                     # 1x_
                     # ___
                     if board_y-1>=0 and board_x-1>=0:
-                        if str(self.board[board_y-1][board_x-1])=='x':
+                        if str(self.__board[board_y-1][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # 1x_
                     # ___
                     if board_y>=0 and board_x-1>=0:
-                        if str(self.board[board_y][board_x-1])=='x':
+                        if str(self.__board[board_y][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # 1__
-                    if board_y+1<len(self.board) and board_x-1>=0:
-                        if str(self.board[board_y+1][board_x-1])=='x':
+                    if board_y+1<len(self.__board) and board_x-1>=0:
+                        if str(self.__board[board_y+1][board_x-1])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # _1_
-                    if board_y+1<len(self.board) and board_x<len(self.board[0]):
-                        if str(self.board[board_y+1][board_x])=='x':
+                    if board_y+1<len(self.__board) and board_x<len(self.__board[0]):
+                        if str(self.__board[board_y+1][board_x])=='x':
                             value += 1
                     
                     # ___
                     # _x_
                     # __1
-                    if board_y+1<len(self.board) and board_x+1<len(self.board[0]):
-                        if str(self.board[board_y+1][board_x+1])=='x':
+                    if board_y+1<len(self.__board) and board_x+1<len(self.__board[0]):
+                        if str(self.__board[board_y+1][board_x+1])=='x':
                             value += 1
                     
                     # ___
                     # _x1
                     # ___
-                    if board_y>=0 and board_x+1<len(self.board[0]):
-                        if str(self.board[board_y][board_x+1])=='x':
+                    if board_y>=0 and board_x+1<len(self.__board[0]):
+                        if str(self.__board[board_y][board_x+1])=='x':
                             value += 1
                     
                     # __1
                     # _x_
                     # ___
-                    if board_y-1>=0 and board_x+1<len(self.board[0]):
-                        if str(self.board[board_y-1][board_x+1])=='x':
+                    if board_y-1>=0 and board_x+1<len(self.__board[0]):
+                        if str(self.__board[board_y-1][board_x+1])=='x':
                             value += 1
                     
                     # _1_
                     # _x_
                     # ___
-                    if board_y-1>=0 and board_x<len(self.board[0]):
-                        if str(self.board[board_y-1][board_x])=='x':
+                    if board_y-1>=0 and board_x<len(self.__board[0]):
+                        if str(self.__board[board_y-1][board_x])=='x':
                             value += 1
-                    self.board[board_y][board_x].value = value
+                    self.__board[board_y][board_x].value = value
         print(self)
         self.__is_generated = True
         return self
@@ -165,7 +165,7 @@ class Board:
         # protected_area = [Coordinations(seed_x, seed_y)]
         for a in range(100):
             while True:
-                coordination = Coordinations(random.randint(0, len(self.board)-1), random.randint(0, len(self.board)-1))
+                coordination = Coordinations(random.randint(0, len(self.__board)-1), random.randint(0, len(self.__board)-1))
                 if coordination in mines or coordination in protected_area:
                     continue
                 else:
@@ -176,27 +176,27 @@ class Board:
     def __get_continous_area_of_zeros(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
         # x = coordinations.x
         # y = coordinations.y
-        active_tile = self.board[coords.y][coords.x]
+        active_tile = self.__board[coords.y][coords.x]
         value = active_tile.value
         # 0__
         # _x_
         # ___
         if coords.x-1>=0 and coords.y-1>=0 and not Coordinations(coords.x-1, coords.y-1) in output:
-            if self.board[coords.y-1][coords.x-1].value == 0:
+            if self.__board[coords.y-1][coords.x-1].value == 0:
                 output += [Coordinations(coords.x-1, coords.y-1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y-1), output)
         # __0
         # _x_
         # ___
-        if coords.x+1<len(self.board[0]) and coords.y-1>=0 and not Coordinations(coords.x+1, coords.y-1) in output:
-            if self.board[coords.y-1][coords.x+1].value == 0:
+        if coords.x+1<len(self.__board[0]) and coords.y-1>=0 and not Coordinations(coords.x+1, coords.y-1) in output:
+            if self.__board[coords.y-1][coords.x+1].value == 0:
                 output += [Coordinations(coords.x+1, coords.y-1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y-1), output)
         # ___
         # 0x_
         # ___
         if coords.x-1>=0 and not Coordinations(coords.x-1, coords.y) in output:
-            if self.board[coords.y][coords.x-1].value == 0:
+            if self.__board[coords.y][coords.x-1].value == 0:
                 output += [Coordinations(coords.x-1, coords.y)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y), output)
         
@@ -204,39 +204,39 @@ class Board:
         # _x_
         # ___
         if coords.y-1>=0:
-            if self.board[coords.y-1][coords.x].value == 0 and not Coordinations(coords.x, coords.y-1) in output:
+            if self.__board[coords.y-1][coords.x].value == 0 and not Coordinations(coords.x, coords.y-1) in output:
                 output += [Coordinations(coords.x, coords.y-1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y-1), output)
         
         # ___
         # _x0
         # ___
-        if coords.x+1<len(self.board[0]) and not Coordinations(coords.x+1, coords.y) in output:
-            if self.board[coords.y][coords.x+1].value == 0:
+        if coords.x+1<len(self.__board[0]) and not Coordinations(coords.x+1, coords.y) in output:
+            if self.__board[coords.y][coords.x+1].value == 0:
                 output += [Coordinations(coords.x+1, coords.y)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y), output)
         
         # ___
         # _x_
         # _0_
-        if coords.y+1<len(self.board) and not Coordinations(coords.x, coords.y+1) in output:
-            if self.board[coords.y+1][coords.x].value == 0:
+        if coords.y+1<len(self.__board) and not Coordinations(coords.x, coords.y+1) in output:
+            if self.__board[coords.y+1][coords.x].value == 0:
                 output += [Coordinations(coords.x, coords.y+1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y+1), output)
         
         # ___
         # _x_
         # 0__
-        if coords.y+1<len(self.board) and coords.x-1>=0 and not Coordinations(coords.x-1, coords.y+1) in output:
-            if self.board[coords.y+1][coords.x-1].value == 0:
+        if coords.y+1<len(self.__board) and coords.x-1>=0 and not Coordinations(coords.x-1, coords.y+1) in output:
+            if self.__board[coords.y+1][coords.x-1].value == 0:
                 output += [Coordinations(coords.x-1, coords.y+1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y+1), output)
         
         # ___
         # _x_
         # __0
-        if coords.y+1<len(self.board) and coords.x+1<len(self.board[0]) and not Coordinations(coords.x+1, coords.y+1) in output:
-            if self.board[coords.y+1][coords.x+1].value == 0:
+        if coords.y+1<len(self.__board) and coords.x+1<len(self.__board[0]) and not Coordinations(coords.x+1, coords.y+1) in output:
+            if self.__board[coords.y+1][coords.x+1].value == 0:
                 output += [Coordinations(coords.x+1, coords.y+1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y+1), output)
 
@@ -264,27 +264,27 @@ class Board:
             # ___
             # _0_
             # 1__
-            if x-1>=0 and y+1<len(self.board) and not (x-1, y+1) in output:
+            if x-1>=0 and y+1<len(self.__board) and not (x-1, y+1) in output:
                 output.append(Coordinations(x-1, y+1))
             # ___
             # _0_
             # _1_
-            if y+1<len(self.board) and not (x, y+1) in output:
+            if y+1<len(self.__board) and not (x, y+1) in output:
                 output.append(Coordinations(x, y+1))
             # ___
             # _0_
             # __1
-            if x+1<len(self.board[0]) and y+1<len(self.board) and not (x+1, y+1) in output:
+            if x+1<len(self.__board[0]) and y+1<len(self.__board) and not (x+1, y+1) in output:
                 output.append(Coordinations(x+1, y+1))
             # ___
             # _01
             # ___
-            if x+1<len(self.board[0]) and not (x+1, y) in output:
+            if x+1<len(self.__board[0]) and not (x+1, y) in output:
                 output.append(Coordinations(x+1, y))
             # __1
             # _0_
             # ___
-            if x+1<len(self.board[0]) and y-1 >= 0 and not (x+1, y-1) in output:
+            if x+1<len(self.__board[0]) and y-1 >= 0 and not (x+1, y-1) in output:
                 output.append(Coordinations(x+1, y-1))
             # _1_
             # _0_
@@ -299,7 +299,7 @@ class Board:
 
     def __str__(self) -> str:
         output = ''
-        for line in self.board:
+        for line in self.__board:
             for cell in line:
                 output += str(cell) + '|'
             output += '\n'
