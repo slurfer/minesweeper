@@ -16,12 +16,25 @@ class Coordinations:
         return f'{{x: {str(self.x)}, y: {str(self.y)}}}'
 
 
+class Tile:
+    def __init__(self, is_mine, value = None, was_clicked = False) -> None:
+        self.is_mine = is_mine
+        self.value = value
+        self.was_clicked = was_clicked
+    
+    def __str__(self) -> str:
+        if self.is_mine == True:
+            return 'x'
+        else:
+            return str(self.value)
+
+
 class Board:
     def __init__(self) -> None:
         self.board:List[Tile] = [] # game board
         self.board_width = 20
         self.board_height = 20
-        self.is_generated = False
+        self.__is_generated = False
         for board_y in range(self.board_height):
             line = []
             for board_x in range(self.board_width):
@@ -29,7 +42,7 @@ class Board:
             self.board.append(line)
 
     def generate_board(self, seed_coordinations: Coordinations):
-        mine_coordinates = self.generate_mines_coordinations(seed_coordinations)
+        mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
             self.board[mine.y][mine.x] = Tile(True)
 
@@ -96,7 +109,7 @@ class Board:
                             value += 1
                     self.board[board_y][board_x].value = value
         print(self)
-        self.is_generated = True
+        self.__is_generated = True
         return self
 
 
@@ -108,7 +121,7 @@ class Board:
                     output.append(Coordinations(cell, row))
         return output
     
-    def generate_mines_coordinations(self, seed_coordinates: Coordinations)->List[Coordinations]:
+    def __generate_mines_coordinations(self, seed_coordinates: Coordinations)->List[Coordinations]:
         mines = []
         seed_x = seed_coordinates.x
         seed_y = seed_coordinates.y
@@ -134,7 +147,7 @@ class Board:
             mines.append(coordination)
         return mines
     
-    def get_continous_area_of_zeros(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
+    def __get_continous_area_of_zeros(self, coords:Coordinations, output: List[Coordinations])->List[Coordinations]:
         # x = coordinations.x
         # y = coordinations.y
         active_tile = self.board[coords.y][coords.x]
@@ -145,7 +158,7 @@ class Board:
         if coords.x-1>=0 and not Coordinations(coords.x-1, coords.y) in output:
             if self.board[coords.y][coords.x-1].value == 0:
                 output += [Coordinations(coords.x-1, coords.y)]
-                output = self.get_zero_area_from_coordinations(Coordinations(coords.x-1, coords.y), output)
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y), output)
         
         # _0_
         # _x_
@@ -153,7 +166,7 @@ class Board:
         if coords.y-1>=0:
             if self.board[coords.y-1][coords.x].value == 0 and not Coordinations(coords.x, coords.y-1) in output:
                 output += [Coordinations(coords.x, coords.y-1)]
-                output = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y-1), output)
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y-1), output)
         
         # ___
         # _x0
@@ -161,7 +174,7 @@ class Board:
         if coords.x+1<len(self.board[0]) and not Coordinations(coords.x+1, coords.y) in output:
             if self.board[coords.y][coords.x+1].value == 0:
                 output += [Coordinations(coords.x+1, coords.y)]
-                output = self.get_zero_area_from_coordinations(Coordinations(coords.x+1, coords.y), output)
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y), output)
         
         # ___
         # _x_
@@ -169,12 +182,12 @@ class Board:
         if coords.y+1<len(self.board) and not Coordinations(coords.x, coords.y+1) in output:
             if self.board[coords.y+1][coords.x].value == 0:
                 output += [Coordinations(coords.x, coords.y+1)]
-                output = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y+1), output)
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y+1), output)
 
         return output
     
-    def show_tile(self, coords:Coordinations)->List[Coordinations]:
-        zeros = self.get_zero_area_from_coordinations(Coordinations(coords.x, coords.y), [Coordinations(coords.x, coords.y)])
+    def __get_continous_area(self, coords:Coordinations)->List[Coordinations]:
+        zeros = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y), [Coordinations(coords.x, coords.y)])
         output = []
         for tile in zeros:
             output.append(tile)
@@ -225,6 +238,19 @@ class Board:
 
             
         return output
+
+
+    def click(self, coords:Coordinations):
+        if not self.__is_generated:
+            self.generate_board(coords)
+        if self.board[coords.y][coords.x].value == 0:
+            discovered_tiles = self.__get_continous_area(coords)
+            for coordinations in discovered_tiles:
+                x = coordinations.x
+                y = coordinations.y
+                self.board[y][x].was_clicked = True
+        else:
+            self.board[coords.y][coords.x].was_clicked = True
             
 
     def __str__(self) -> str:
@@ -237,17 +263,7 @@ class Board:
 
 
 
-class Tile:
-    def __init__(self, is_mine, value = None, was_clicked = False) -> None:
-        self.is_mine = is_mine
-        self.value = value
-        self.was_clicked = was_clicked
-    
-    def __str__(self) -> str:
-        if self.is_mine == True:
-            return 'x'
-        else:
-            return str(self.value)
+
 
 
 

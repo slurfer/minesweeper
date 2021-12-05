@@ -74,18 +74,9 @@ class Graphics:
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
                 if not self.game_ended == True:                    
-                    board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True 
+                    # board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True
+                    board.click(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7)) 
                     self.draw_board()
-                    if not board.is_generated:
-                        board.generate_board(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7))
-                    self.draw_board()
-                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == 0:
-                        neighbors = board.show_tile(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7))
-                        for coordinations in neighbors:
-                            x = coordinations.x
-                            y = coordinations.y
-                            board.board[y][x].was_clicked = True
-                            self.draw_board()
 
                     if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
                         self.game_ended = True
