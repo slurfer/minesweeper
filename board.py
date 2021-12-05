@@ -30,6 +30,7 @@ class Tile:
 
 
 class Board:
+    """ Contain gameboard and handle its actions """
     def __init__(self) -> None:
         self.__board:List[Tile] = [] # game board
         self.board_width = 20
