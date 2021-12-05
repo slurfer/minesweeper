@@ -57,22 +57,23 @@ class Graphics:
         y, x = yx
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
-                if not self.game_ended == True:                    
+                if not self.game_ended == True:    
+                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).was_clicked is False:
+                        if player.player_1 == True:
+                            player.player_1 = False
+                            player.player_2 = True
+                            player.turn()
+                        elif player.player_2 == True:
+                            player.player_2 = False
+                            player.player_1 = True
+                            player.turn()                                    
                     board.click(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
                     self.draw_board()
                     if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
                         self.game_ended = True
                         self.draw_board()
                         self.end_screen()
-                    #if board._Board__board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked == False:
-                    if player.player_1 == True:
-                        player.player_1 = False
-                        player.player_2 = True
-                        player.turn()
-                    elif player.player_2 == True:
-                        player.player_2 = False
-                        player.player_1 = True
-                        player.turn()
+
                 if self.game_ended == True:   
                     if 750 >= y >= 700:
                         if 150 >= x >= 30:
@@ -142,12 +143,12 @@ class Graphics:
         msg_rect.topleft = (30, 760)
         DISPLAY_SURFACE.blit(msg_surface, msg_rect)
         if player.player_1 == True:
-            msg_surface = BASIC_FONT.render("Player 2 has won", True, BG_COLOR)
+            msg_surface = BASIC_FONT.render("Player 1 has won", True, BG_COLOR)
             msg_rect = msg_surface.get_rect()
             msg_rect.topleft = (121, 395)
             DISPLAY_SURFACE.blit(msg_surface, msg_rect)
         else:
-            msg_surface = BASIC_FONT.render("Player 1 has won", True, BG_COLOR)
+            msg_surface = BASIC_FONT.render("Player 2 has won", True, BG_COLOR)
             msg_rect = msg_surface.get_rect()
             msg_rect.topleft = (121, 395)
             DISPLAY_SURFACE.blit(msg_surface, msg_rect)
