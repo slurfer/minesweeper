@@ -65,9 +65,10 @@ class Graphics:
                             raise ValueError ("Game quit")
                     if 810 >= y >= 760:
                         if 271 >= x >= 30:
+                            self.reset_board()
                             self.game_ended = False
-                            self.reset_board()                
-                if not self.game_ended is True:
+                                
+                elif not self.game_ended is True:
                     print(player.player_1)
                     if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).was_clicked is False:
                         player.switch_players()
