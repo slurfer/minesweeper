@@ -52,7 +52,18 @@ class Board:
                 self.board[coordinations.y][coordinations.x].was_clicked = True
         else:
             self.board[coords.y][coords.x].was_clicked = True
+        
     
+    def reset(self):
+        self.__is_generated = False
+        self.board = []
+        for board_y in range(self.board_height):
+            line = []
+            for board_x in range(self.board_width):
+                line.append(Tile(False, 0))
+            self.board.append(line)
+        print()
+        print(self)
     
     def get_zero_coordinations(self)->List[Coordinations]:
         output = []
