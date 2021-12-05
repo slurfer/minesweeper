@@ -74,11 +74,10 @@ class Graphics:
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
                 if not self.game_ended == True:                    
-                    # board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].was_clicked = True
                     board.click(Coordinations(x // CELL_SIZE - 1, y // CELL_SIZE - 7)) 
                     self.draw_board()
 
-                    if board.board[y // CELL_SIZE - 7][x // CELL_SIZE - 1].value == None:
+                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
                         self.game_ended = True
                         self.draw_board()
                         self.end_screen()
@@ -106,8 +105,8 @@ class Graphics:
         top_left = (CELL_SIZE,WINDOW_HEIGHT - (PLAY_FIELD_HEIGHT + CELL_SIZE))
         for y in range(board.board_height):
             for x in range(board.board_width):
-                if board.board[y][x].was_clicked is True:
-                    sprite = board.board[y][x].value
+                if board.get_tile(x, y).was_clicked is True:
+                    sprite = board.get_tile(x, y).value
                     if sprite == None: 
                         sprite = self.values["mine"]
                         DISPLAY_SURFACE.blit(sprite, top_left)                   
@@ -136,7 +135,7 @@ class Graphics:
                     DISPLAY_SURFACE.blit(sprite, top_left)
                     
                 if self.game_ended == True:
-                    if board.board[y][x].value == None:
+                    if board.get_tile(x, y).value == None:
                         DISPLAY_SURFACE.blit(self.values["mine"], top_left)
                 top_left = top_left[0] + CELL_SIZE, top_left[1]
             top_left = CELL_SIZE, top_left[1] + CELL_SIZE

@@ -63,6 +63,9 @@ class Board:
                     output.append(Coordinations(cell, row))
         return output
     
+    def get_tile(self, x:int, y: int)-> Tile:
+        return self.board[y][x]
+    
     
     def __generate_board(self, seed_coordinations: Coordinations):
         mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
