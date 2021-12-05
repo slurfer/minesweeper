@@ -41,7 +41,7 @@ class Board:
                 line.append(Tile(False, 0))
             self.board.append(line)
 
-    def generate_board(self, seed_coordinations: Coordinations):
+    def __generate_board(self, seed_coordinations: Coordinations):
         mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
             self.board[mine.y][mine.x] = Tile(True)
@@ -242,7 +242,7 @@ class Board:
 
     def click(self, coords:Coordinations):
         if not self.__is_generated:
-            self.generate_board(coords)
+            self.__generate_board(coords)
         if self.board[coords.y][coords.x].value == 0:
             discovered_tiles = self.__get_continous_area(coords)
             for coordinations in discovered_tiles:
