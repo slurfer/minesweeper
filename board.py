@@ -41,6 +41,29 @@ class Board:
                 line.append(Tile(False, 0))
             self.board.append(line)
 
+
+    def click(self, coords:Coordinations):
+        if not self.__is_generated:
+            self.__generate_board(coords)
+        if self.board[coords.y][coords.x].value == 0:
+            discovered_tiles = self.__get_continous_area(coords)
+            for coordinations in discovered_tiles:
+                x = coordinations.x
+                y = coordinations.y
+                self.board[y][x].was_clicked = True
+        else:
+            self.board[coords.y][coords.x].was_clicked = True
+    
+    
+    def get_zero_coordinations(self)->List[Coordinations]:
+        output = []
+        for row in range(len(self.board)):
+            for cell in range(len(self.board)):
+                if self.board[row][cell].value == 0:
+                    output.append(Coordinations(cell, row))
+        return output
+    
+    
     def __generate_board(self, seed_coordinations: Coordinations):
         mine_coordinates = self.__generate_mines_coordinations(seed_coordinations)
         for mine in mine_coordinates:
@@ -112,14 +135,6 @@ class Board:
         self.__is_generated = True
         return self
 
-
-    def get_zero_coordinations(self)->List[Coordinations]:
-        output = []
-        for row in range(len(self.board)):
-            for cell in range(len(self.board)):
-                if self.board[row][cell].value == 0:
-                    output.append(Coordinations(cell, row))
-        return output
     
     def __generate_mines_coordinations(self, seed_coordinates: Coordinations)->List[Coordinations]:
         mines = []
@@ -216,6 +231,7 @@ class Board:
 
         return output
     
+    
     def __get_continous_area(self, coords:Coordinations)->List[Coordinations]:
         zeros = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y), [Coordinations(coords.x, coords.y)])
         output = []
@@ -268,19 +284,6 @@ class Board:
 
             
         return output
-
-
-    def click(self, coords:Coordinations):
-        if not self.__is_generated:
-            self.__generate_board(coords)
-        if self.board[coords.y][coords.x].value == 0:
-            discovered_tiles = self.__get_continous_area(coords)
-            for coordinations in discovered_tiles:
-                x = coordinations.x
-                y = coordinations.y
-                self.board[y][x].was_clicked = True
-        else:
-            self.board[coords.y][coords.x].was_clicked = True
             
 
     def __str__(self) -> str:
