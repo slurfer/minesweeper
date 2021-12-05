@@ -29,10 +29,12 @@ def main():
     pygame.display.set_caption("Minesweeper")
     BASIC_FONT = pygame.font.Font('freesansbold.ttf', BASIC_FONT_SIZE)
     running = True
+    player.timestamp()
     player.turn()
     graphics.draw_board()
     while running:
         FPS_CLOCK.tick(FPS)
+        player.subtract_time()
         for event in pygame.event.get():
             if (event.type == pygame.QUIT):
                 running = False
@@ -57,31 +59,24 @@ class Graphics:
         y, x = yx
         if y >= 200 and y <= 800:
             if x >= 30 and x <= 630:
-                if not self.game_ended == True:    
-                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).was_clicked is False:
-                        if player.player_1 == True:
-                            player.player_1 = False
-                            player.player_2 = True
-                            player.turn()
-                        elif player.player_2 == True:
-                            player.player_2 = False
-                            player.player_1 = True
-                            player.turn()                                    
-                    board.click(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
-                    self.draw_board()
-                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
-                        self.game_ended = True
-                        self.draw_board()
-                        self.end_screen()
-
-                if self.game_ended == True:   
+                if self.game_ended is True:   
                     if 750 >= y >= 700:
                         if 150 >= x >= 30:
                             raise ValueError ("Game quit")
                     if 810 >= y >= 760:
                         if 271 >= x >= 30:
                             self.game_ended = False
-                            self.reset_board()
+                            self.reset_board()                
+                if not self.game_ended is True:
+                    print(player.player_1)
+                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).was_clicked is False:
+                        player.switch_players()
+                    board.click(x // CELL_SIZE - 1, y // CELL_SIZE - 7)
+                    self.draw_board()
+                    if board.get_tile(x // CELL_SIZE - 1, y // CELL_SIZE - 7).value == None:
+                        self.game_ended = True
+                        self.draw_board()
+                        self.end_screen()
                     else:
                         return None
             else:
@@ -165,6 +160,9 @@ class Player:
     def __init__(self):
         self.player_1 = True
         self.player_2 = False
+        self.player_1_remaining_time = 30
+        self.player_2_remaining_time = 30
+        self.timestamp()
 
     def turn(self):
         if self.player_1 == True:            
@@ -186,6 +184,54 @@ class Player:
             msg_rect.topleft = (30, 30)
             DISPLAY_SURFACE.blit(msg_surface, msg_rect)
 
+    def display_time(self):
+        self.subtract_time()
+        if self.player_1 == True:
+            msg_surface = pygame.Rect(30, 95, 60, 54)
+            pygame.draw.rect(DISPLAY_SURFACE, BG_COLOR, msg_surface)
+            msg_surface = BASIC_FONT.render(str(int(self.player_1_remaining_time)), True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (30, 95)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            self.timestamp()       
+        elif self.player_2 == True:
+            msg_surface = pygame.Rect(570, 95, 60, 54)
+            pygame.draw.rect(DISPLAY_SURFACE, BG_COLOR, msg_surface)
+            msg_surface = BASIC_FONT.render(str(int(self.player_2_remaining_time)), True, PLAYER)
+            msg_rect = msg_surface.get_rect()
+            msg_rect.topleft = (570, 95)
+            DISPLAY_SURFACE.blit(msg_surface, msg_rect)
+            self.timestamp()      
+
+    def timestamp(self):
+        self.timestampvalue = time.time()
+    
+    def switch_players(self):
+        if self.player_1 == True:
+            self.subtract_time()
+            self.display_time()
+            print(f'Player 1: {self.player_1_remaining_time}')
+            self.player_1 = False
+            self.player_2 = True
+            self.turn()
+        elif self.player_2 == True:
+            self.subtract_time()
+            self.display_time()
+            print(f'Player 2: {self.player_2_remaining_time}')
+            self.timestamp()
+            self.player_2 = False
+            self.player_1 = True
+            self.turn()
+    
+    def subtract_time(self):
+        if self.player_1 == True:
+            self.player_1_remaining_time -= time.time()-self.timestampvalue
+            self.timestamp()
+            return self.player_1_remaining_time
+        else:
+            self.player_2_remaining_time -= time.time()-self.timestampvalue
+            self.timestamp()
+            return self.player_2_remaining_time
 
 player = Player()
 graphics = Graphics()
