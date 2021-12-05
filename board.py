@@ -62,8 +62,6 @@ class Board:
             for board_x in range(self.board_width):
                 line.append(Tile(False, 0))
             self.board.append(line)
-        print()
-        print(self)
     
     def get_zero_coordinations(self)->List[Coordinations]:
         output = []
