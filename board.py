@@ -132,7 +132,7 @@ class Board:
             Coordinations(seed_x-1, seed_y+1),
             Coordinations(seed_x+1, seed_y),
             Coordinations(seed_x+1, seed_y+1),
-            Coordinations(seed_x+1, seed_y),
+            Coordinations(seed_x, seed_y+1),
             Coordinations(seed_x+1, seed_y-1),
             Coordinations(seed_x, seed_y-1)
         ]
@@ -152,6 +152,20 @@ class Board:
         # y = coordinations.y
         active_tile = self.board[coords.y][coords.x]
         value = active_tile.value
+        # 0__
+        # _x_
+        # ___
+        if coords.x-1>=0 and coords.y-1>=0 and not Coordinations(coords.x-1, coords.y-1) in output:
+            if self.board[coords.y-1][coords.x-1].value == 0:
+                output += [Coordinations(coords.x-1, coords.y-1)]
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y-1), output)
+        # __0
+        # _x_
+        # ___
+        if coords.x+1<len(self.board[0]) and coords.y-1>=0 and not Coordinations(coords.x+1, coords.y-1) in output:
+            if self.board[coords.y-1][coords.x+1].value == 0:
+                output += [Coordinations(coords.x+1, coords.y-1)]
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y-1), output)
         # ___
         # 0x_
         # ___
@@ -183,6 +197,22 @@ class Board:
             if self.board[coords.y+1][coords.x].value == 0:
                 output += [Coordinations(coords.x, coords.y+1)]
                 output = self.__get_continous_area_of_zeros(Coordinations(coords.x, coords.y+1), output)
+        
+        # ___
+        # _x_
+        # 0__
+        if coords.y+1<len(self.board) and coords.x-1>=0 and not Coordinations(coords.x-1, coords.y+1) in output:
+            if self.board[coords.y+1][coords.x-1].value == 0:
+                output += [Coordinations(coords.x-1, coords.y+1)]
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x-1, coords.y+1), output)
+        
+        # ___
+        # _x_
+        # __0
+        if coords.y+1<len(self.board) and coords.x+1<len(self.board[0]) and not Coordinations(coords.x+1, coords.y+1) in output:
+            if self.board[coords.y+1][coords.x+1].value == 0:
+                output += [Coordinations(coords.x+1, coords.y+1)]
+                output = self.__get_continous_area_of_zeros(Coordinations(coords.x+1, coords.y+1), output)
 
         return output
     
